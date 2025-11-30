@@ -1,3 +1,4 @@
+import ComponentProfiler from "@/components/ComponentProfiler";
 import MyVirtualList from "@/components/MyVirtualList";
 import { loadSalesRaw } from "@/lib/sales/loaders";
 
@@ -6,7 +7,9 @@ const Page = async () => {
 
   return (
     <div className="h-[600px]">
-      <MyVirtualList records={records} />
+      <ComponentProfiler id="my-virtual-list">
+        <MyVirtualList records={records} />
+      </ComponentProfiler>
     </div>
   );
 };

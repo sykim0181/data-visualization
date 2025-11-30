@@ -1,3 +1,4 @@
+import ComponentProfiler from "@/components/ComponentProfiler";
 import DefaultList from "@/components/DefaultList";
 import { loadSalesRaw } from "@/lib/sales/loaders";
 
@@ -6,7 +7,9 @@ const Page = async () => {
 
   return (
     <div className="w-full h-[500px] overflow-auto border border-black">
-      <DefaultList records={records} />
+      <ComponentProfiler id="default-list">
+        <DefaultList records={records} />
+      </ComponentProfiler>
     </div>
   );
 };

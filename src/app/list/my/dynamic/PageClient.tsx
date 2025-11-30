@@ -21,7 +21,6 @@ const PageClient = ({ items }: { items: SalesRecord[] }) => {
             {item.salesChannel} | Units: {item.unitsSold.toLocaleString()} |
             Profit: {item.totalProfit.toLocaleString()}
           </div>
-          {/* {item.country.length > 10 && ( */}
           <div
             style={{
               width: 20 * item.country.length,
@@ -29,7 +28,6 @@ const PageClient = ({ items }: { items: SalesRecord[] }) => {
               backgroundColor: colors[index % colors.length],
             }}
           />
-          {/* )} */}
           <p>
             주문일 {item.orderDate} | 수익 {item.totalProfit.toLocaleString()}
           </p>

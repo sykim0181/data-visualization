@@ -2,8 +2,6 @@
 
 import {
   useCallback,
-  useEffect,
-  useEffectEvent,
   useMemo,
   useRef,
   useState,
@@ -27,25 +25,19 @@ function MyDynamicVirtualList<T>({
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // 각 아이템의 높이
-  const [itemHeights, setItemHeights] = useState<number[]>(() =>
-    Array(items.length).fill(estimatedItemHeight)
-  );
+  const [itemHeights, setItemHeights] = useState<number[]>([]);
 
-  // items 길이가 바뀌면 heights 배열도 맞춰줌
-  const updateItemHeights = useEffectEvent((estimatedItemHeight: number) => {
-    setItemHeights((prev) => {
-      if (prev.length === items.length) return prev;
-      const next = Array(items.length).fill(estimatedItemHeight);
-      for (let i = 0; i < Math.min(prev.length, next.length); i++) {
-        next[i] = prev[i] ?? estimatedItemHeight;
-      }
-      return next;
-    });
-  });
+  const normalizedHeights = useMemo(() => {
+    // 기본값은 모두 estimatedItemHeight
+    const next = Array(items.length).fill(estimatedItemHeight);
 
-  useEffect(() => {
-    updateItemHeights(estimatedItemHeight);
-  }, [items.length, estimatedItemHeight]);
+    // 기존에 알고 있던 높이는 앞에서부터 그대로 복사
+    for (let i = 0; i < Math.min(itemHeights.length, next.length); i++) {
+      next[i] = itemHeights[i] ?? estimatedItemHeight;
+    }
+
+    return next;
+  }, [items.length, itemHeights, estimatedItemHeight]);
 
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -65,14 +57,14 @@ function MyDynamicVirtualList<T>({
 
   // offsets[i] = i번째 아이템의 top
   const { offsets, totalHeight } = useMemo(() => {
-    const offsets: number[] = new Array(items.length).fill(0);
+    const offsets: number[] = new Array(normalizedHeights.length).fill(0);
     let acc = 0;
-    for (let i = 0; i < items.length; i++) {
+    for (let i = 0; i < normalizedHeights.length; i++) {
       offsets[i] = acc;
-      acc += itemHeights[i];
+      acc += normalizedHeights[i];
     }
     return { offsets, totalHeight: acc };
-  }, [items.length, itemHeights]);
+  }, [normalizedHeights]);
 
   const viewportHeight = height;
   const scrollBottom = scrollTop + viewportHeight;
@@ -80,13 +72,13 @@ function MyDynamicVirtualList<T>({
   // scrollTop에 해당하는 startIndex 찾기
   const startIndex = useMemo(() => {
     let low = 0;
-    let high = items.length - 1;
+    let high = normalizedHeights.length - 1;
     let first = 0;
 
     while (low <= high) {
       const mid = (low + high) >> 1;
       const itemTop = offsets[mid];
-      const itemBottom = itemTop + itemHeights[mid];
+      const itemBottom = itemTop + normalizedHeights[mid];
 
       if (itemBottom >= scrollTop) {
         first = mid;
@@ -96,12 +88,12 @@ function MyDynamicVirtualList<T>({
       }
     }
     return first;
-  }, [items.length, offsets, itemHeights, scrollTop]);
+  }, [offsets, normalizedHeights, scrollTop]);
   // scrollBottom에 해당하는 endIndex 찾기
   const endIndex = useMemo(() => {
     let low = 0;
-    let high = items.length - 1;
-    let last = items.length - 1;
+    let high = normalizedHeights.length - 1;
+    let last = normalizedHeights.length - 1;
 
     while (low <= high) {
       const mid = (low + high) >> 1;
@@ -115,7 +107,7 @@ function MyDynamicVirtualList<T>({
       }
     }
     return last;
-  }, [items.length, offsets, scrollBottom]);
+  }, [normalizedHeights, offsets, scrollBottom]);
 
   const renderStart = Math.max(0, startIndex - overscanCount);
   const renderEnd = Math.min(items.length - 1, endIndex + overscanCount);

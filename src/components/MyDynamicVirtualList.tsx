@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import DynamicRowItem from "./DynamicRowItem";
 
 type MyDynamicVirtualListProps<T> = {
   items: T[];
@@ -117,23 +113,16 @@ function MyDynamicVirtualList<T>({
     visibleItems.push(i);
   }
 
-  // 개별 아이템 높이 측정용 ref 콜백
-  const setItemRef = useCallback(
-    (index: number) => (el: HTMLDivElement | null) => {
-      if (!el) return;
-      const measured = el.offsetHeight;
-      if (!measured) return;
-      setItemHeights((prev) => {
-        const prevHeight = prev[index];
-        // 너무 자잘한 차이는 무시 (무한 리렌더 방지)
-        if (Math.abs(prevHeight - measured) < 1) return prev;
-        const next = [...prev];
-        next[index] = measured;
-        return next;
-      });
-    },
-    []
-  );
+  const onRowHeightChange = (index: number, height: number) => {
+    setItemHeights((prev) => {
+      const prevHeight = prev[index];
+      // 너무 자잘한 차이는 무시 (무한 리렌더 방지)
+      if (Math.abs(prevHeight - height) < 1) return prev;
+      const next = [...prev];
+      next[index] = height;
+      return next;
+    });
+  };
 
   return (
     <div
@@ -151,11 +140,15 @@ function MyDynamicVirtualList<T>({
           return (
             <div
               key={index}
-              ref={setItemRef(index)}
-              className="absolute left-0 right-0 box-border p-2 border-b"
+              // ref={setItemRef(index)}
+              className="absolute left-0 right-0 box-border"
               style={{ top }}
             >
-              {renderItem(item, index)}
+              <DynamicRowItem
+                onResize={(height) => onRowHeightChange(index, height)}
+              >
+                {renderItem(item, index)}
+              </DynamicRowItem>
             </div>
           );
         })}

@@ -13,6 +13,9 @@ const DynamicRowItem = ({ children, onResize }: Props) => {
 
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
+      const el = entry.target as HTMLElement;
+      if (!el.isConnected) return;
+
       const height = entry.contentRect.height;
       onResize(height);
     });

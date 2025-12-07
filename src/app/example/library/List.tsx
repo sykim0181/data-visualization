@@ -1,13 +1,16 @@
+"use client";
+
+import ExpandableSalesRow from "@/components/list/ExpandableSalesRow";
+import StaticSalesRow from "@/components/list/StaticSalesRow";
 import { SalesRecord } from "@/lib/sales/types";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRef } from "react";
-import SaleItem from "./SalesItem";
 
 interface Props {
   records: SalesRecord[];
 }
 
-const DynamicVirtualList = ({ records }: Props) => {
+const List = ({ records }: Props) => {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({
@@ -33,11 +36,10 @@ const DynamicVirtualList = ({ records }: Props) => {
               key={virtualRow.key}
               ref={virtualizer.measureElement}
               data-index={virtualRow.index}
+              className="border-b"
             >
-              <SaleItem
-                item={records[virtualRow.index]}
-                index={virtualRow.index}
-              />
+              {/* <ExpandableSalesRow record={records[virtualRow.index]} /> */}
+              <StaticSalesRow record={records[virtualRow.index]} />
             </div>
           ))}
         </div>
@@ -46,4 +48,4 @@ const DynamicVirtualList = ({ records }: Props) => {
   );
 };
 
-export default DynamicVirtualList;
+export default List;

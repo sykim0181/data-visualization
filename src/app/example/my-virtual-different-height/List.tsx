@@ -1,5 +1,7 @@
 "use client";
 
+import StaticSalesRow from "@/components/list/StaticSalesRow";
+import { SalesRecord } from "@/lib/sales/types";
 import {
   useCallback,
   useEffect,
@@ -8,27 +10,27 @@ import {
   useRef,
   useState,
 } from "react";
-import DynamicRowItem from "./DynamicRowItem";
 
-type MyDynamicVirtualListProps<T> = {
-  items: T[];
-  renderItem: (item: T, index: number) => React.ReactNode;
-  estimatedItemHeight?: number;
-  overscanCount?: number;
-  height: number; // 컨테이너 높이
-};
+const List = ({
+  records,
+  estimatedRowHeight,
+  overscan,
+}: {
+  records: SalesRecord[];
+  estimatedRowHeight: number;
+  overscan: number;
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-function MyDynamicVirtualList<T>({
-  items,
-  renderItem,
-  estimatedItemHeight = 80,
-  overscanCount = 5,
-  height,
-}: MyDynamicVirtualListProps<T>) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [itemHeights, setItemHeights] = useState<number[]>([]); // 각 아이템의 높이
 
-  // 각 아이템의 높이
-  const [itemHeights, setItemHeights] = useState<number[]>([]);
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    setViewportHeight(container.clientHeight);
+  }, []);
 
   const initializeItemHeights = useEffectEvent(
     (itemCount: number, estimatedItemHeight: number) => {
@@ -43,12 +45,11 @@ function MyDynamicVirtualList<T>({
   );
 
   useEffect(() => {
-    initializeItemHeights(items.length, estimatedItemHeight);
-  }, [items.length, estimatedItemHeight]);
+    initializeItemHeights(records.length, estimatedRowHeight);
+  }, [records.length, estimatedRowHeight]);
 
   const [scrollTop, setScrollTop] = useState(0);
 
-  // 스크롤 핸들러
   const animationFrameRef = useRef<number | null>(null);
   const handleScroll = useCallback(() => {
     const el = containerRef.current;
@@ -73,7 +74,6 @@ function MyDynamicVirtualList<T>({
     return { offsets, totalHeight: acc };
   }, [itemHeights]);
 
-  // scrollTop에 해당하는 startIndex 찾기
   const startIndex = useMemo(() => {
     let low = 0;
     let high = itemHeights.length - 1;
@@ -93,9 +93,9 @@ function MyDynamicVirtualList<T>({
     }
     return first;
   }, [offsets, itemHeights, scrollTop]);
-  // scrollBottom에 해당하는 endIndex 찾기
+
   const endIndex = useMemo(() => {
-    const scrollBottom = scrollTop + height;
+    const scrollBottom = scrollTop + viewportHeight;
 
     let low = 0;
     let high = itemHeights.length - 1;
@@ -113,53 +113,55 @@ function MyDynamicVirtualList<T>({
       }
     }
     return last;
-  }, [itemHeights, offsets, scrollTop, height]);
+  }, [itemHeights, offsets, scrollTop, viewportHeight]);
 
-  const renderStart = Math.max(0, startIndex - overscanCount);
-  const renderEnd = Math.min(items.length - 1, endIndex + overscanCount);
+  const renderStart = Math.max(0, startIndex - overscan);
+  const renderEnd = Math.min(records.length - 1, endIndex + overscan);
 
   const visibleItems = [];
   for (let i = renderStart; i <= renderEnd; i++) {
     visibleItems.push(i);
   }
 
-  const onRowHeightChange = (index: number, height: number) => {
-    setItemHeights((prev) => {
-      const prevHeight = prev[index];
-      // 너무 자잘한 차이는 무시 (무한 리렌더 방지)
-      if (Math.abs(prevHeight - height) < 1) return prev;
-      const next = [...prev];
-      next[index] = height;
-      return next;
-    });
-  };
+  const setItemRef = useCallback(
+    (index: number) => (el: HTMLDivElement | null) => {
+      if (!el) return;
+
+      const height = el.offsetHeight;
+      if (!height) return;
+
+      setItemHeights((prev) => {
+        const prevHeight = prev[index];
+        // 너무 자잘한 차이는 무시 (무한 리렌더 방지)
+        if (Math.abs(prevHeight - height) < 1) return prev;
+        const next = [...prev];
+        next[index] = height;
+        return next;
+      });
+    },
+    []
+  );
 
   return (
     <div
       ref={containerRef}
-      className="relative overflow-y-auto border border-gray-400"
-      style={{ height }}
+      className="h-[600px] w-[600px] relative overflow-y-auto border"
       onScroll={handleScroll}
     >
-      {/* 전체 높이를 차지하는 가상 컨테이너 */}
       <div className="relative" style={{ height: totalHeight }}>
-        {visibleItems.map((index) => (
-          <div
-            key={index}
-            className="absolute left-0 right-0 box-border"
-            style={{ top: offsets[index] }}
-          >
-            <DynamicRowItem
-              key={index}
-              onResize={(height) => onRowHeightChange(index, height)}
-            >
-              {renderItem(items[index], index)}
-            </DynamicRowItem>
-          </div>
-        ))}
+        <div
+          className="absolute left-0 right-0"
+          style={{ top: offsets[renderStart] }}
+        >
+          {visibleItems.map((index) => (
+            <div key={index} ref={setItemRef(index)} className="border-b">
+              <StaticSalesRow record={records[index]} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default MyDynamicVirtualList;
+export default List;

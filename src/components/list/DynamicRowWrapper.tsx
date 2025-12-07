@@ -1,11 +1,12 @@
 import { ReactNode, useEffect, useRef } from "react";
 
-interface Props {
+const DynamicRowWrapper = ({
+  children,
+  onResize,
+}: {
   children: ReactNode;
   onResize: (height: number) => void;
-}
-
-const DynamicRowItem = ({ children, onResize }: Props) => {
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,8 +14,7 @@ const DynamicRowItem = ({ children, onResize }: Props) => {
 
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
-      const el = entry.target as HTMLElement;
-      if (!el.isConnected) return;
+      if (!entry.target.isConnected) return;
 
       const height = entry.contentRect.height;
       onResize(height);
@@ -30,4 +30,4 @@ const DynamicRowItem = ({ children, onResize }: Props) => {
   return <div ref={ref}>{children}</div>;
 };
 
-export default DynamicRowItem;
+export default DynamicRowWrapper;

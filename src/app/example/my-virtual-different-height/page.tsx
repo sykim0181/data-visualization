@@ -1,16 +1,14 @@
 import ComponentProfiler from "@/components/ComponentProfiler";
 import { loadSalesRaw } from "@/lib/sales/loaders";
-import PageClient from "./PageClient";
+import List from "./List";
 
 const Page = async () => {
   const records = await loadSalesRaw();
 
   return (
-    <div className="h-[600px]">
-      <ComponentProfiler id="my-dynamic-virtual-list">
-        <PageClient items={records} />
-      </ComponentProfiler>
-    </div>
+    <ComponentProfiler id="my-virtual-list-with-different-height-row">
+      <List records={records} estimatedRowHeight={80} overscan={5} />
+    </ComponentProfiler>
   );
 };
 

@@ -1,16 +1,14 @@
 import ComponentProfiler from "@/components/ComponentProfiler";
-import MyVirtualList from "@/components/MyVirtualList";
 import { loadSalesRaw } from "@/lib/sales/loaders";
+import List from "./List";
 
 const Page = async () => {
   const records = await loadSalesRaw();
 
   return (
-    <div className="h-[600px]">
-      <ComponentProfiler id="my-virtual-list">
-        <MyVirtualList records={records} />
-      </ComponentProfiler>
-    </div>
+    <ComponentProfiler id="library-dynamic-virtual-list">
+      <List records={records} />
+    </ComponentProfiler>
   );
 };
 

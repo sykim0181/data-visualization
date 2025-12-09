@@ -46,7 +46,7 @@ const SalesTable = ({ records }: Props) => {
           style={{ height: virtualizer.getTotalSize() }}
           className="relative"
         >
-          <div className="absolute left-0" style={{ top: items[0].start ?? 0 }}>
+          <div className="absolute left-0" style={{ top: items[0]?.start ?? 0 }}>
             {items.map((virtualRow) => (
               <div
                 key={virtualRow.key}

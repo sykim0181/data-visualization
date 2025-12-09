@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <div>
-      <div className="w-[800px] mx-auto">
+      <div className="w-[1000px] mx-auto">
         <SalesTable records={records} />
       </div>
     </div>

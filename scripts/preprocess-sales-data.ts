@@ -1,13 +1,18 @@
-import fs from 'fs';
-import path from 'path';
-import Papa from 'papaparse';
+import fs from "fs";
+import path from "path";
+import Papa from "papaparse";
 
-import type { SalesRecordRaw } from '../src/lib/sales/types';
-import { normalizeSalesRecord } from '../src/lib/sales/utils';
+import type { SalesRecordRaw } from "../src/lib/sales/types";
+import { groupByYearMonth, normalizeSalesRecord } from "../src/lib/sales/utils";
 
-const ROOT_DIR = path.resolve(__dirname, '..');
-const INPUT_CSV = path.join(ROOT_DIR, 'data', '100000_Sales_Records.csv');
-const OUTPUT_RAW_JSON = path.join(ROOT_DIR, 'public', 'sales.raw.json');
+const ROOT_DIR = path.resolve(__dirname, "..");
+const INPUT_CSV = path.join(ROOT_DIR, "data", "100000_Sales_Records.csv");
+const OUTPUT_RAW_JSON = path.join(ROOT_DIR, "public", "sales.raw.json");
+const OUTPUT_BY_YEAR_MONTH_JSON = path.join(
+  ROOT_DIR,
+  "public",
+  "sales.by-year-month.json"
+);
 
 function readCSVFile(filePath: string): Promise<SalesRecordRaw[]> {
   return new Promise((resolve, reject) => {
@@ -18,7 +23,7 @@ function readCSVFile(filePath: string): Promise<SalesRecordRaw[]> {
       skipEmptyLines: true,
       complete(results) {
         if (results.errors && results.errors.length > 0) {
-          console.error('CSV parse errors:', results.errors.slice(0, 3));
+          console.error("CSV parse errors:", results.errors.slice(0, 3));
         }
         resolve(results.data);
       },
@@ -30,7 +35,7 @@ function readCSVFile(filePath: string): Promise<SalesRecordRaw[]> {
 }
 
 async function main() {
-  console.log('📥 Reading CSV:', INPUT_CSV);
+  console.log("📥 Reading CSV:", INPUT_CSV);
   const rawRows = await readCSVFile(INPUT_CSV);
   console.log(`- Raw rows: ${rawRows.length}`);
 
@@ -44,7 +49,7 @@ async function main() {
     } catch (e) {
       errorCount += 1;
       if (errorCount <= 5) {
-        console.warn('⚠️  Failed to parse row:', row, e);
+        console.warn("⚠️  Failed to parse row:", row, e);
       }
     }
   }
@@ -54,10 +59,22 @@ async function main() {
     console.log(`⚠️  Skipped rows: ${errorCount}`);
   }
 
-  fs.writeFileSync(OUTPUT_RAW_JSON, JSON.stringify(normalized), 'utf-8');
-  console.log('💾 Saved raw data to:', OUTPUT_RAW_JSON);
+  fs.writeFileSync(OUTPUT_RAW_JSON, JSON.stringify(normalized), "utf-8");
+  console.log("💾 Saved raw data to:", OUTPUT_RAW_JSON);
 
-  console.log('🎉 Done.');
+  // 월별 집계 데이터 저장 (차트 전용)
+  const byYearMonth = groupByYearMonth(normalized);
+  fs.writeFileSync(
+    OUTPUT_BY_YEAR_MONTH_JSON,
+    JSON.stringify(byYearMonth),
+    "utf-8"
+  );
+  console.log(
+    "💾 Saved monthly aggregated data to:",
+    OUTPUT_BY_YEAR_MONTH_JSON
+  );
+
+  console.log("🎉 Done.");
 }
 
 main().catch((err) => {

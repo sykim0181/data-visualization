@@ -1,4 +1,4 @@
-import type { SalesRecordRaw, SalesRecord } from "./types";
+import type { SalesRecordRaw, SalesRecord, SalesByYear } from "./types";
 
 function parseNumber(value: string): number {
   // "1,234.56" 같은 형식 대비
@@ -40,4 +40,34 @@ export function normalizeSalesRecord(raw: SalesRecordRaw): SalesRecord {
     totalCost: parseNumber(raw["Total Cost"]),
     totalProfit: parseNumber(raw["Total Profit"]),
   };
+}
+
+export function groupByYearMonth(records: SalesRecord[]): SalesByYear {
+  const result: SalesByYear = {};
+
+  for (const r of records) {
+    // "YYYY-MM-DD"
+    const year = Number(r.orderDate.slice(0, 4));
+    const month = Number(r.orderDate.slice(5, 7)); // "01" → 1
+
+    if (!result[year]) {
+      result[year] = {};
+    }
+
+    if (!result[year][month]) {
+      result[year][month] = {
+        month,
+        totalRevenue: 0,
+        totalProfit: 0,
+        totalUnitsSold: 0,
+      };
+    }
+
+    const bucket = result[year][month];
+    bucket.totalRevenue += r.totalRevenue;
+    bucket.totalProfit += r.totalProfit;
+    bucket.totalUnitsSold += r.unitsSold;
+  }
+
+  return result;
 }

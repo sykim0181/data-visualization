@@ -38,7 +38,7 @@ const MonthlySalesChart = ({ year, data }: Props) => {
         tickFormatter={(value) => value.toLocaleString()}
         width="auto"
       />
-      <Legend />
+      <Legend verticalAlign="top" wrapperStyle={{ position: "relative" }} />
       <Tooltip
         content={({ label, payload, active }) => (
           <CustomTooltip

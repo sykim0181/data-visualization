@@ -3,7 +3,13 @@ import path from "path";
 import Papa from "papaparse";
 
 import type { SalesRecordRaw } from "../src/lib/sales/types";
-import { groupByYearMonth, normalizeSalesRecord } from "../src/lib/sales/utils";
+import {
+  buildCountryTop10,
+  buildItemTypeShare,
+  buildKpis,
+  groupByYearMonth,
+  normalizeSalesRecord,
+} from "../src/lib/sales/utils";
 
 const ROOT_DIR = path.resolve(__dirname, "..");
 const INPUT_CSV = path.join(ROOT_DIR, "data", "100000_Sales_Records.csv");
@@ -12,6 +18,17 @@ const OUTPUT_BY_YEAR_MONTH_JSON = path.join(
   ROOT_DIR,
   "public",
   "sales.by-year-month.json"
+);
+const OUTPUT_KPI = path.join(ROOT_DIR, "public", "sales.kpi.json");
+const OUTPUT_COUNTRY_TOP_10 = path.join(
+  ROOT_DIR,
+  "public",
+  "sales.top-10-country.json"
+);
+const OUTPUT_SHARE_ITEM_TYPE = path.join(
+  ROOT_DIR,
+  "public",
+  "sales.item-type-share.json"
 );
 
 function readCSVFile(filePath: string): Promise<SalesRecordRaw[]> {
@@ -73,6 +90,26 @@ async function main() {
     "💾 Saved monthly aggregated data to:",
     OUTPUT_BY_YEAR_MONTH_JSON
   );
+
+  const kpis = buildKpis(normalized);
+  fs.writeFileSync(OUTPUT_KPI, JSON.stringify(kpis), "utf-8");
+  console.log("💾 Saved KPI data to:", OUTPUT_KPI);
+
+  const countryTop10ByRevenue = buildCountryTop10(normalized);
+  fs.writeFileSync(
+    OUTPUT_COUNTRY_TOP_10,
+    JSON.stringify(countryTop10ByRevenue),
+    "utf-8"
+  );
+  console.log("💾 Saved Top 10 Country data to:", OUTPUT_COUNTRY_TOP_10);
+
+  const itemTypeShareByUnits = buildItemTypeShare(normalized);
+  fs.writeFileSync(
+    OUTPUT_SHARE_ITEM_TYPE,
+    JSON.stringify(itemTypeShareByUnits),
+    "utf-8"
+  );
+  console.log("💾 Saved Share of Item Type data to:", OUTPUT_COUNTRY_TOP_10);
 
   console.log("🎉 Done.");
 }

@@ -1,0 +1,15 @@
+[
+  { "country": "Hungary", "totalRevenue": 837433953.0399994 },
+  { "country": "Bahrain", "totalRevenue": 835302930.8699996 },
+  {
+    "country": "Federated States of Micronesia",
+    "totalRevenue": 832669517.0800005
+  },
+  { "country": "Liberia", "totalRevenue": 816786910.8799998 },
+  { "country": "Malta", "totalRevenue": 816286329.5400007 },
+  { "country": "Sudan", "totalRevenue": 814145709.2700003 },
+  { "country": "Marshall Islands", "totalRevenue": 810251011.3599999 },
+  { "country": "Panama", "totalRevenue": 807337234.43 },
+  { "country": "Yemen", "totalRevenue": 797978866.0699996 },
+  { "country": "New Zealand", "totalRevenue": 793897933.1100001 }
+]

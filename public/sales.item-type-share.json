@@ -1,0 +1,14 @@
+[
+  { "itemType": "Snacks", "unitsSold": 41699092 },
+  { "itemType": "Cosmetics", "unitsSold": 41924464 },
+  { "itemType": "Fruits", "unitsSold": 40797276 },
+  { "itemType": "Personal Care", "unitsSold": 41517766 },
+  { "itemType": "Household", "unitsSold": 41458795 },
+  { "itemType": "Clothes", "unitsSold": 41773440 },
+  { "itemType": "Vegetables", "unitsSold": 41254836 },
+  { "itemType": "Office Supplies", "unitsSold": 42293330 },
+  { "itemType": "Beverages", "unitsSold": 41514213 },
+  { "itemType": "Meat", "unitsSold": 41745367 },
+  { "itemType": "Cereal", "unitsSold": 42254418 },
+  { "itemType": "Baby Food", "unitsSold": 41911620 }
+]

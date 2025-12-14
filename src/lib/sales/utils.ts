@@ -1,4 +1,4 @@
-import type { SalesRecordRaw, SalesRecord, SalesByYear } from "./types";
+import type { SalesRecordRaw, SalesRecord, SalesByYear, KPI } from "./types";
 
 function parseNumber(value: string): number {
   // "1,234.56" 같은 형식 대비
@@ -70,4 +70,49 @@ export function groupByYearMonth(records: SalesRecord[]): SalesByYear {
   }
 
   return result;
+}
+
+export function buildKpis(records: SalesRecord[]): KPI {
+  let totalRevenue = 0;
+  let totalProfit = 0;
+  let totalUnitsSold = 0;
+
+  for (const r of records) {
+    totalRevenue += r.totalRevenue;
+    totalProfit += r.totalProfit;
+    totalUnitsSold += r.unitsSold;
+  }
+
+  return {
+    totalRevenue,
+    totalProfit,
+    totalUnitsSold,
+    orderCount: records.length,
+  };
+}
+
+export function buildCountryTop10(records: SalesRecord[]) {
+  const map = new Map<string, number>();
+
+  for (const r of records) {
+    map.set(r.country, (map.get(r.country) ?? 0) + r.totalRevenue);
+  }
+
+  return Array.from(map.entries())
+    .map(([country, totalRevenue]) => ({ country, totalRevenue }))
+    .sort((a, b) => b.totalRevenue - a.totalRevenue)
+    .slice(0, 10);
+}
+
+export function buildItemTypeShare(records: SalesRecord[]) {
+  const map = new Map<string, number>();
+
+  for (const r of records) {
+    map.set(r.itemType, (map.get(r.itemType) ?? 0) + r.unitsSold);
+  }
+
+  return Array.from(map.entries()).map(([itemType, unitsSold]) => ({
+    itemType,
+    unitsSold,
+  }));
 }

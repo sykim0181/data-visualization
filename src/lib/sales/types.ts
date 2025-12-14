@@ -45,3 +45,10 @@ export type SalesByYear = {
     [month: number]: SalesMonthSummary;
   };
 };
+
+export type KPI = {
+  totalRevenue: number;
+  totalProfit: number;
+  totalUnitsSold: number;
+  orderCount: number;
+};

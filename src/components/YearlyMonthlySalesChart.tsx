@@ -47,7 +47,7 @@ const YearlyMonthlySalesChart = ({ data }: Props) => {
           id="yearMonth"
           onChange={(ev) => setYear(Number(ev.currentTarget.value))}
           value={year}
-          className="border rounded-2xl px-3 py-2 ml-4 text-sm"
+          className="border rounded-xl px-3 py-1 ml-4 text-sm"
         >
           {Object.keys(data).map((year) => (
             <option key={year} value={Number(year)}>

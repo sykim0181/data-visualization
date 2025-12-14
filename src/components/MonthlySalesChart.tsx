@@ -121,6 +121,8 @@ const CustomBar = ({ fill, x, y, width, height }: BarProps) => {
       return;
     }
 
+    if (height === 0) return;
+
     const radius = 12;
     return `
     M${x},${y + height}

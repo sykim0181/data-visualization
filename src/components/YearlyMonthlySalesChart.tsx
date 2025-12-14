@@ -39,13 +39,15 @@ const YearlyMonthlySalesChart = ({ data }: Props) => {
   }, [year, data]);
 
   return (
-    <div className="w-full flex flex-col gap-6 border border-gray-400 rounded-2xl p-6">
+    <div className="w-full flex flex-col border border-gray-400 rounded-2xl p-6">
+      <h2 className="font-bold text-lg">Monthly Revenue/Profit</h2>
+
       <div className="w-fit ml-auto">
         <select
           id="yearMonth"
           onChange={(ev) => setYear(Number(ev.currentTarget.value))}
           value={year}
-          className="border rounded-2xl px-3 py-2 ml-4"
+          className="border rounded-2xl px-3 py-2 ml-4 text-sm"
         >
           {Object.keys(data).map((year) => (
             <option key={year} value={Number(year)}>
@@ -54,12 +56,7 @@ const YearlyMonthlySalesChart = ({ data }: Props) => {
           ))}
         </select>
       </div>
-      {year && (
-        <div className="flex flex-col gap-8">
-          <h2 className="font-bold text-lg">Monthly Revenue/Profit</h2>
-          <MonthlySalesChart year={year} data={monthlyData} />
-        </div>
-      )}
+      {year && <MonthlySalesChart year={year} data={monthlyData} />}
     </div>
   );
 };

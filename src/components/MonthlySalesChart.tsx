@@ -20,7 +20,7 @@ const MonthlySalesChart = ({ year, data }: Props) => {
   return (
     <ComposedChart
       responsive
-      style={{ width: "100%", height: "600px" }}
+      style={{ width: "100%", height: "500px" }}
       data={data}
       margin={{ left: 40, bottom: 15 }}
     >

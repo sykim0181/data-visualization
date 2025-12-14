@@ -1,6 +1,8 @@
 import { SalesMonthSummary } from "@/lib/sales/types";
+import { useMemo } from "react";
 import {
   Bar,
+  BarProps,
   ComposedChart,
   Legend,
   Line,
@@ -54,6 +56,7 @@ const MonthlySalesChart = ({ year, data }: Props) => {
         yAxisId="left"
         fill="url(#gray-gradient)"
         className="bg-gray-300"
+        shape={CustomBar}
       />
       <Line
         dataKey="totalProfit"
@@ -105,6 +108,37 @@ const CustomTooltip = ({
         </>
       )}
     </div>
+  );
+};
+
+const isNumber = (value: string | number | undefined): value is number => {
+  return typeof value === "number";
+};
+
+const CustomBar = ({ fill, x, y, width, height }: BarProps) => {
+  const path = useMemo(() => {
+    if (!isNumber(x) || !isNumber(y) || !isNumber(width) || !isNumber(height)) {
+      return;
+    }
+
+    const radius = 12;
+    return `
+    M${x},${y + height}
+    L${x},${y + radius}
+    a${radius},${radius} 0 0,1 ${radius},${-radius}
+    L${x + width - radius},${y}
+    a${radius},${radius} 0 0,1 ${radius},${radius}
+    L${x + width},${y + height}
+    Z`;
+  }, [x, y, width, height]);
+
+  return (
+    <path
+      d={path}
+      stroke="none"
+      fill={fill}
+      className="opacity-50 hover:opacity-100"
+    />
   );
 };
 

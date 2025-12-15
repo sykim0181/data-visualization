@@ -19,8 +19,9 @@ export default async function Home() {
   const itemTypeShare = await loadItemTypeShare();
 
   return (
-    <div>
+    <div className="py-16">
       <div className="w-[1000px] flex flex-col gap-8 mx-auto">
+        <h1 className="font-bold text-2xl">Analytics</h1>
         <KPIs kpi={kpi} />
         <YearlyMonthlySalesChart data={yearMonthSummary} />
         <ItemTypePieChart data={itemTypeShare} />

@@ -1,7 +1,8 @@
 "use client";
 
-import StaticSalesRow from "@/components/list/StaticSalesRow";
-import { SalesRecord } from "@/lib/sales/types";
+import ExpandableSalesRow from "@/components/list/ExpandableSalesRow";
+import useSalesRecord from "@/hooks/useSalesRecord";
+// import StaticSalesRow from "@/components/list/StaticSalesRow";
 import {
   useCallback,
   useEffect,
@@ -12,14 +13,14 @@ import {
 } from "react";
 
 const List = ({
-  records,
   estimatedRowHeight,
   overscan,
 }: {
-  records: SalesRecord[];
   estimatedRowHeight: number;
   overscan: number;
 }) => {
+  const { records } = useSalesRecord();
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [viewportHeight, setViewportHeight] = useState(0);
@@ -155,7 +156,8 @@ const List = ({
         >
           {visibleItems.map((index) => (
             <div key={index} ref={setItemRef(index)} className="border-b">
-              <StaticSalesRow record={records[index]} />
+              {/* <StaticSalesRow record={records[index]} /> */}
+              <ExpandableSalesRow record={records[index]} />
             </div>
           ))}
         </div>

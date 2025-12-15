@@ -1,9 +1,11 @@
 "use client";
 
 import FixedSalesRow from "@/components/list/FixedSalesRow";
-import { SalesRecord } from "@/lib/sales/types";
+import useSalesRecord from "@/hooks/useSalesRecord";
 
-const List = ({ records }: { records: SalesRecord[] }) => {
+const List = () => {
+  const { records } = useSalesRecord();
+
   return (
     <div className="h-[600px] overflow-auto border">
       {records.map((record) => (

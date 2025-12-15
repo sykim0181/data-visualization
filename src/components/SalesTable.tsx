@@ -1,16 +1,14 @@
 "use client";
 
 import { SALES_COLUMNS } from "@/constants/salesTable";
-import { SalesRecord } from "@/lib/sales/types";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRef } from "react";
 import SalesTableRow from "./SalesTableRow";
+import useSalesRecord from "@/hooks/useSalesRecord";
 
-interface Props {
-  records: SalesRecord[];
-}
+const SalesTable = () => {
+  const { records } = useSalesRecord();
 
-const SalesTable = ({ records }: Props) => {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({

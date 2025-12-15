@@ -2,7 +2,7 @@
 
 import DynamicRowWrapper from "@/components/list/DynamicRowWrapper";
 import ExpandableSalesRow from "@/components/list/ExpandableSalesRow";
-import { SalesRecord } from "@/lib/sales/types";
+import useSalesRecord from "@/hooks/useSalesRecord";
 import {
   useCallback,
   useEffect,
@@ -13,14 +13,14 @@ import {
 } from "react";
 
 const List = ({
-  records,
   estimatedRowHeight,
   overscan,
 }: {
-  records: SalesRecord[];
   estimatedRowHeight: number;
   overscan: number;
 }) => {
+  const { records } = useSalesRecord();
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [viewportHeight, setViewportHeight] = useState(0);

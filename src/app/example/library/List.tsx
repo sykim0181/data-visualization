@@ -1,16 +1,13 @@
 "use client";
 
-import ExpandableSalesRow from "@/components/list/ExpandableSalesRow";
 import StaticSalesRow from "@/components/list/StaticSalesRow";
-import { SalesRecord } from "@/lib/sales/types";
+import useSalesRecord from "@/hooks/useSalesRecord";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRef } from "react";
 
-interface Props {
-  records: SalesRecord[];
-}
+const List = () => {
+  const { records } = useSalesRecord()
 
-const List = ({ records }: Props) => {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({

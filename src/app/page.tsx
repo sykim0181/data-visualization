@@ -9,11 +9,11 @@ import {
   loadItemTypeShare,
   loadKPI,
   loadSalesByYearMonth,
-  loadSalesRaw,
+  // loadSalesRaw,
 } from "@/lib/sales/loaders";
 
 export default async function Home() {
-  const records = await loadSalesRaw();
+  // const records = await loadSalesRaw();
   const yearMonthSummary = await loadSalesByYearMonth();
   const kpi = await loadKPI();
   const countryTop10 = await loadCountryTop10();
@@ -29,7 +29,7 @@ export default async function Home() {
           <YearlyMonthlySalesChart data={yearMonthSummary} />
           <ItemTypePieChart data={itemTypeShare} />
           <TopCountryBarChart data={countryTop10} />
-          <SalesTable records={records} />
+          <SalesTable />
         </main>
       </div>
     </div>

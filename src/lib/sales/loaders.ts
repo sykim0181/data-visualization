@@ -37,5 +37,6 @@ export async function loadCountryTop10(): Promise<CountryRevenue[]> {
 export async function loadItemTypeShare(): Promise<itemTypeShare[]> {
   const filePath = path.join(ROOT_DIR, "public", "sales.item-type-share.json");
   const text = await fs.promises.readFile(filePath, "utf-8");
-  return JSON.parse(text) as { itemType: string; unitsSold: number }[];
+  const data = JSON.parse(text) as { itemType: string; unitsSold: number }[];
+  return data.sort((a, b) => b.unitsSold - a.unitsSold);
 }

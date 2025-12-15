@@ -1,6 +1,12 @@
 import path from "path";
 import fs from "fs";
-import { itemTypeShare, KPI, SalesByYear, SalesRecord } from "./types";
+import {
+  CountryRevenue,
+  itemTypeShare,
+  KPI,
+  SalesByYear,
+  SalesRecord,
+} from "./types";
 
 const ROOT_DIR = process.cwd();
 
@@ -22,9 +28,7 @@ export async function loadKPI(): Promise<KPI> {
   return JSON.parse(text) as KPI;
 }
 
-export async function loadCountryTop10(): Promise<
-  { country: string; totalRevenue: number }[]
-> {
+export async function loadCountryTop10(): Promise<CountryRevenue[]> {
   const filePath = path.join(ROOT_DIR, "public", "sales.top-10-country.json");
   const text = await fs.promises.readFile(filePath, "utf-8");
   return JSON.parse(text) as { country: string; totalRevenue: number }[];

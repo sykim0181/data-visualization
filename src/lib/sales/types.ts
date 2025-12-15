@@ -53,9 +53,12 @@ export type KPI = {
   orderCount: number;
 };
 
+export type CountryRevenue = {
+  country: string;
+  totalRevenue: number;
+};
+
 export type itemTypeShare = {
   itemType: string;
   unitsSold: number;
 };
-
-

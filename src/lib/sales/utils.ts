@@ -4,6 +4,7 @@ import type {
   SalesByYear,
   KPI,
   itemTypeShare,
+  CountryRevenue,
 } from "./types";
 
 function parseNumber(value: string): number {
@@ -97,7 +98,7 @@ export function buildKpis(records: SalesRecord[]): KPI {
   };
 }
 
-export function buildCountryTop10(records: SalesRecord[]) {
+export function buildCountryTop10(records: SalesRecord[]): CountryRevenue[] {
   const map = new Map<string, number>();
 
   for (const r of records) {

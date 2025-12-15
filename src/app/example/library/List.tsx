@@ -19,7 +19,7 @@ const List = () => {
   const items = virtualizer.getVirtualItems();
 
   return (
-    <div ref={parentRef} className="h-[600px] overflow-y-auto border">
+    <div ref={parentRef} className="w-[1200px] h-[600px] overflow-y-auto border">
       <div
         className="w-full relative"
         style={{ height: virtualizer.getTotalSize() }}

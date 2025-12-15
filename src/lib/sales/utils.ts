@@ -1,4 +1,10 @@
-import type { SalesRecordRaw, SalesRecord, SalesByYear, KPI } from "./types";
+import type {
+  SalesRecordRaw,
+  SalesRecord,
+  SalesByYear,
+  KPI,
+  itemTypeShare,
+} from "./types";
 
 function parseNumber(value: string): number {
   // "1,234.56" 같은 형식 대비
@@ -104,7 +110,7 @@ export function buildCountryTop10(records: SalesRecord[]) {
     .slice(0, 10);
 }
 
-export function buildItemTypeShare(records: SalesRecord[]) {
+export function buildItemTypeShare(records: SalesRecord[]): itemTypeShare[] {
   const map = new Map<string, number>();
 
   for (const r of records) {

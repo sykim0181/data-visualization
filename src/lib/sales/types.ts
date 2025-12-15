@@ -52,3 +52,10 @@ export type KPI = {
   totalUnitsSold: number;
   orderCount: number;
 };
+
+export type itemTypeShare = {
+  itemType: string;
+  unitsSold: number;
+};
+
+

@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { KPI, SalesByYear, SalesRecord } from "./types";
+import { itemTypeShare, KPI, SalesByYear, SalesRecord } from "./types";
 
 const ROOT_DIR = process.cwd();
 
@@ -30,12 +30,7 @@ export async function loadCountryTop10(): Promise<
   return JSON.parse(text) as { country: string; totalRevenue: number }[];
 }
 
-export async function loadItemTypeShare(): Promise<
-  {
-    itemType: string;
-    unitsSold: number;
-  }[]
-> {
+export async function loadItemTypeShare(): Promise<itemTypeShare[]> {
   const filePath = path.join(ROOT_DIR, "public", "sales.item-type-share.json");
   const text = await fs.promises.readFile(filePath, "utf-8");
   return JSON.parse(text) as { itemType: string; unitsSold: number }[];

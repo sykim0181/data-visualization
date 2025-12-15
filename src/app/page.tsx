@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import ItemTypePieChart from "@/components/ItemTypePieChart";
 import KPIs from "@/components/KPIs";
 import SalesTable from "@/components/SalesTable";
@@ -19,14 +20,17 @@ export default async function Home() {
   const itemTypeShare = await loadItemTypeShare();
 
   return (
-    <div className="py-16">
-      <div className="w-[1200px] flex flex-col gap-8 mx-auto">
-        <h1 className="font-bold text-2xl">Analytics</h1>
-        <KPIs kpi={kpi} />
-        <YearlyMonthlySalesChart data={yearMonthSummary} />
-        <ItemTypePieChart data={itemTypeShare} />
-        <TopCountryBarChart data={countryTop10} />
-        <SalesTable records={records} />
+    <div className="py-8 bg-(--background)">
+      <div className="w-[1200px] mx-auto">
+        <Header />
+        <main className="mt-8 w-full flex flex-col gap-8">
+          <h1 className="font-bold text-2xl">Analytics</h1>
+          <KPIs kpi={kpi} />
+          <YearlyMonthlySalesChart data={yearMonthSummary} />
+          <ItemTypePieChart data={itemTypeShare} />
+          <TopCountryBarChart data={countryTop10} />
+          <SalesTable records={records} />
+        </main>
       </div>
     </div>
   );

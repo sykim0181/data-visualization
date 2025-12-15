@@ -39,15 +39,15 @@ const YearlyMonthlySalesChart = ({ data }: Props) => {
   }, [year, data]);
 
   return (
-    <div className="w-full flex flex-col border border-gray-400 rounded-2xl p-6">
-      <h2 className="font-bold text-lg">Monthly Revenue/Profit</h2>
+    <div className="w-full flex flex-col rounded-2xl p-6 bg-(--card)">
+      <h2 className="font-bold text-lg text-(--text-primary)">Monthly Revenue/Profit</h2>
 
       <div className="w-fit ml-auto">
         <select
           id="yearMonth"
           onChange={(ev) => setYear(Number(ev.currentTarget.value))}
           value={year}
-          className="border rounded-xl px-3 py-1 ml-4 text-sm"
+          className="text-sm text-(--text-primary) font-bold"
         >
           {Object.keys(data).map((year) => (
             <option key={year} value={Number(year)}>

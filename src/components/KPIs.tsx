@@ -33,16 +33,13 @@ const KPIs = ({ kpi }: Props) => {
   return (
     <section className="w-full grid grid-cols-4 gap-4">
       {items.map((item) => (
-        <div
-          key={item.label}
-          className="rounded-2xl border border-gray-400 bg-white p-4"
-        >
-          <div className="text-sm text-gray-500">{item.label}</div>
-          <div className="mt-2 text-xl font-semibold tracking-tight">
+        <div key={item.label} className="rounded-2xl p-4 bg-(--card)">
+          <div className="text-sm text-(--text-secondary)">{item.label}</div>
+          <div className="mt-2 text-xl font-semibold tracking-tight text-(--text-primary)">
             {item.value}
           </div>
           {item.sub && (
-            <div className="mt-1 text-xs text-gray-400">{item.sub}</div>
+            <div className="mt-1 text-xs text-(--text-secondary)">{item.sub}</div>
           )}
         </div>
       ))}

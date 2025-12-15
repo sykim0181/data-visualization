@@ -25,17 +25,17 @@ const SalesTable = ({ records }: Props) => {
   const gridTemplateColumns = SALES_COLUMNS.map((col) => col.width).join(" ");
 
   return (
-    <div className="w-full rounded-2xl overflow-hidden border border-gray-400 text-sm">
+    <div className="w-full px-[5px] rounded-2xl overflow-hidden text-sm bg-(--card)">
       <div ref={parentRef} className="relative w-full h-[600px] overflow-auto">
         {/* 헤더 */}
         <div
-          className="w-fit grid sticky top-0 bg-gray-100 py-2 border-b border-gray-400 z-1"
+          className="w-fit grid sticky top-0 py-4 pr-[10px] z-1 bg-(--card) text-(--text-secondary)"
           style={{
             gridTemplateColumns,
           }}
         >
           {SALES_COLUMNS.map((col) => (
-            <div key={col.key} className="text-center">
+            <div key={col.key} className="text-center" style={{ textAlign: col.align ?? "left" }}>
               {col.header}
             </div>
           ))}
@@ -46,12 +46,11 @@ const SalesTable = ({ records }: Props) => {
           style={{ height: virtualizer.getTotalSize() }}
           className="relative"
         >
-          <div className="absolute left-0" style={{ top: items[0]?.start ?? 0 }}>
+          <div className="absolute left-0 flex flex-col gap-2" style={{ top: items[0]?.start ?? 0 }}>
             {items.map((virtualRow) => (
               <div
                 key={virtualRow.key}
                 data-index={virtualRow.index}
-                className="border-b border-gray-400"
                 ref={virtualizer.measureElement}
               >
                 <SalesTableRow record={records[virtualRow.index]} />

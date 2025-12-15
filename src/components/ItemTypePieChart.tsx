@@ -9,8 +9,8 @@ interface Props {
 
 const ItemTypePieChart = ({ data }: Props) => {
   return (
-    <section className="w-full border border-gray-400 rounded-2xl p-6">
-      <h2 className="font-bold text-lg">Units Share by Item Type</h2>
+    <section className="w-full rounded-2xl p-6 bg-(--card)">
+      <h2 className="font-bold text-lg text-(--text-primary)">Units Share by Item Type</h2>
       <PieChart style={{ width: "100%", height: "500px" }} responsive>
         <Pie
           data={data}
@@ -19,8 +19,7 @@ const ItemTypePieChart = ({ data }: Props) => {
           cx="50%"
           cy="50%"
           innerRadius="50%"
-          fill="#99a1af"
-          shape={renderActiveShape}
+          shape={renderShape}
           paddingAngle={2}
         />
       </PieChart>
@@ -29,7 +28,7 @@ const ItemTypePieChart = ({ data }: Props) => {
   );
 };
 
-const renderActiveShape = ({
+const renderShape = ({
   cx,
   cy,
   midAngle,
@@ -37,11 +36,12 @@ const renderActiveShape = ({
   outerRadius,
   startAngle,
   endAngle,
-  fill,
+  // fill,
   payload,
   percent,
   value,
   isActive,
+  index,
 }: PieSectorDataItem & { isActive: boolean; index: number }) => {
   const RADIAN = Math.PI / 180;
   const sin = Math.sin(-RADIAN * (midAngle ?? 1));
@@ -54,6 +54,9 @@ const renderActiveShape = ({
   const ey = my;
   const textAnchor = cos >= 0 ? "start" : "end";
 
+  const colors = ["primary", "secondary", "accent", "highlight"];
+  const fill = colors[index % colors.length];
+
   return (
     <g>
       <Sector
@@ -64,14 +67,14 @@ const renderActiveShape = ({
         cornerRadius={10}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={fill}
+        fill={`var(--${fill})`}
         opacity={isActive ? 0.5 : 1}
       />
-      {isActive && (
+      {true && (
         <>
           <path
             d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-            stroke={fill}
+            stroke={"var(--text-primary)"}
             fill="none"
           />
           <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
@@ -79,16 +82,16 @@ const renderActiveShape = ({
             x={ex + (cos >= 0 ? 1 : -1) * 12}
             y={ey}
             textAnchor={textAnchor}
-            fill="#333"
+            fill="var(--text-primary)"
           >{`${payload.itemType} ${((percent ?? 1) * 100).toFixed(2)}%`}</text>
           <text
             x={ex + (cos >= 0 ? 1 : -1) * 12}
             y={ey}
             dy={18}
             textAnchor={textAnchor}
-            fill="#999"
+            fill="var(--text-secondary)"
           >
-            {`${value.toLocaleString()} Units Sold`}
+            {`${value.toLocaleString()} Units`}
           </text>
         </>
       )}

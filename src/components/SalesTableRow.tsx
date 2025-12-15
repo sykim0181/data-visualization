@@ -14,7 +14,7 @@ const SalesTableRow = ({ record }: Props) => {
   return (
     <>
       <div
-        className="w-fit grid py-2 cursor-pointer"
+        className="w-fit grid py-3 pr-[10px] cursor-pointer bg-(--card-popover) rounded-2xl"
         style={{ gridTemplateColumns }}
         onClick={() => setIsExpanded((prev) => !prev)}
       >
@@ -22,13 +22,14 @@ const SalesTableRow = ({ record }: Props) => {
           <div
             key={col.key}
             style={{ textAlign: col.align ?? "left" }}
+            className="text-(--card-popover-text)"
           >
             {col.display ? col.display(record[col.key]) : record[col.key]}
           </div>
         ))}
       </div>
       {isExpanded && (
-        <div className="bg-gray-50 px-4 py-3 text-sm text-gray-700">
+        <div className="bg-gray-50 px-4 py-3 text-sm text-gray-700 rounded-2xl">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">

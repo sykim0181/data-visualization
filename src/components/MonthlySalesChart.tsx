@@ -30,6 +30,7 @@ const MonthlySalesChart = ({ year, data }: Props) => {
         domain={["auto", "auto"]}
         tickFormatter={(value) => value.toLocaleString()}
         width="auto"
+        className="text-(--text-secondary)"
       />
       <YAxis
         yAxisId="right"
@@ -37,6 +38,7 @@ const MonthlySalesChart = ({ year, data }: Props) => {
         domain={["auto", "auto"]}
         tickFormatter={(value) => value.toLocaleString()}
         width="auto"
+        className="text-(--text-secondary)"
       />
       <Legend verticalAlign="top" wrapperStyle={{ position: "relative" }} />
       <Tooltip
@@ -54,22 +56,16 @@ const MonthlySalesChart = ({ year, data }: Props) => {
         dataKey="totalRevenue"
         name="Revenue"
         yAxisId="left"
-        fill="url(#gray-vertical-gradient)"
+        fill="var(--primary)"
         shape={CustomBar}
       />
       <Line
         dataKey="totalProfit"
         name="Profit"
         yAxisId="right"
-        stroke="black"
+        stroke="var(--secondary)"
+        strokeWidth={5}
       />
-
-      <defs>
-        <linearGradient id="gray-vertical-gradient" x1="1" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#99a1af" />
-          <stop offset="100%" stopColor="#e5e7eb" />
-        </linearGradient>
-      </defs>
     </ComposedChart>
   );
 };
@@ -90,19 +86,19 @@ const CustomTooltip = ({
   const isVisible = active && payload && payload.length;
   return (
     <div
-      className="bg-white rounded-2xl border border-gray-400 p-4"
+      className="bg-(--card-popover) rounded-2xl p-4"
       style={{ visibility: isVisible ? "visible" : "hidden" }}
     >
       {isVisible && (
         <>
-          <p className="font-bold">{`${year}.${label
+          <p className="font-bold text-(--card-popover-text)">{`${year}.${label
             ?.toString()
             .padStart(2, "0")}`}</p>
           <div className="grid grid-cols-2">
-            <p className="text-gray-500">{payload[0].name}</p>
-            <p className="text-right">{`$${payload[0].value.toLocaleString()}`}</p>
-            <p className="text-gray-500">{payload[1].name}</p>
-            <p className="text-right">{`$${payload[1].value.toLocaleString()}`}</p>
+            <p className="text-(--text-secondary)">{payload[0].name}</p>
+            <p className="text-right text-(--card-popover-text)">{`$${payload[0].value.toLocaleString()}`}</p>
+            <p className="text-(--text-secondary)">{payload[1].name}</p>
+            <p className="text-right text-(--card-popover-text)">{`$${payload[1].value.toLocaleString()}`}</p>
           </div>
         </>
       )}
@@ -138,7 +134,7 @@ const CustomBar = ({ fill, x, y, width, height }: BarProps) => {
       d={path}
       stroke="none"
       fill={fill}
-      className="opacity-50 hover:opacity-100"
+      className="opacity-100 hover:opacity-50"
     />
   );
 };

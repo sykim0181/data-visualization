@@ -1,9 +1,10 @@
+import ItemTypePieChart from "@/components/ItemTypePieChart";
 import KPIs from "@/components/KPIs";
 import SalesTable from "@/components/SalesTable";
 import YearlyMonthlySalesChart from "@/components/YearlyMonthlySalesChart";
 import {
   // loadCountryTop10,
-  // loadItemTypeShare,
+  loadItemTypeShare,
   loadKPI,
   loadSalesByYearMonth,
   loadSalesRaw,
@@ -14,18 +15,15 @@ export default async function Home() {
   const yearMonthSummary = await loadSalesByYearMonth();
   const kpi = await loadKPI();
   // const countryTop10 = await loadCountryTop10();
-  // const itemTypeShare = await loadItemTypeShare();
+  const itemTypeShare = await loadItemTypeShare();
 
   return (
     <div>
       <div className="w-[1000px] flex flex-col gap-8 mx-auto">
         <KPIs kpi={kpi} />
-
         <YearlyMonthlySalesChart data={yearMonthSummary} />
-
-        <div>
-          <SalesTable records={records} />
-        </div>
+        <ItemTypePieChart data={itemTypeShare} />
+        <SalesTable records={records} />
       </div>
     </div>
   );

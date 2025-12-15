@@ -54,8 +54,7 @@ const MonthlySalesChart = ({ year, data }: Props) => {
         dataKey="totalRevenue"
         name="Revenue"
         yAxisId="left"
-        fill="url(#gray-gradient)"
-        className="bg-gray-300"
+        fill="url(#gray-vertical-gradient)"
         shape={CustomBar}
       />
       <Line
@@ -66,7 +65,7 @@ const MonthlySalesChart = ({ year, data }: Props) => {
       />
 
       <defs>
-        <linearGradient id="gray-gradient" x1="1" y1="0" x2="1" y2="1">
+        <linearGradient id="gray-vertical-gradient" x1="1" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#99a1af" />
           <stop offset="100%" stopColor="#e5e7eb" />
         </linearGradient>

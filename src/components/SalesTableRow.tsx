@@ -14,7 +14,7 @@ const SalesTableRow = ({ record }: Props) => {
   return (
     <>
       <div
-        className="w-fit grid p-2 cursor-pointer"
+        className="w-fit grid py-2 cursor-pointer"
         style={{ gridTemplateColumns }}
         onClick={() => setIsExpanded((prev) => !prev)}
       >
@@ -22,7 +22,6 @@ const SalesTableRow = ({ record }: Props) => {
           <div
             key={col.key}
             style={{ textAlign: col.align ?? "left" }}
-            className="px-2"
           >
             {col.display ? col.display(record[col.key]) : record[col.key]}
           </div>

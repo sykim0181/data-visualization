@@ -29,13 +29,13 @@ const SalesTable = ({ records }: Props) => {
       <div ref={parentRef} className="relative w-full h-[600px] overflow-auto">
         {/* 헤더 */}
         <div
-          className="w-fit grid sticky top-0 bg-gray-100 p-2 border-b border-gray-400 z-1"
+          className="w-fit grid sticky top-0 bg-gray-100 py-2 border-b border-gray-400 z-1"
           style={{
             gridTemplateColumns,
           }}
         >
           {SALES_COLUMNS.map((col) => (
-            <div key={col.key} className="px-2 text-center">
+            <div key={col.key} className="text-center">
               {col.header}
             </div>
           ))}

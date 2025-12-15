@@ -20,7 +20,7 @@ export default async function Home() {
 
   return (
     <div className="py-16">
-      <div className="w-[1000px] flex flex-col gap-8 mx-auto">
+      <div className="w-[1200px] flex flex-col gap-8 mx-auto">
         <h1 className="font-bold text-2xl">Analytics</h1>
         <KPIs kpi={kpi} />
         <YearlyMonthlySalesChart data={yearMonthSummary} />

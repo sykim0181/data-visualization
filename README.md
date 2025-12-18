@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+이 프로젝트는 10만 건 이상의 Sales 데이터를 시각화하고, 대규모 리스트 렌더링을 위해 가상 리스트(Virtualized List) 기법을 직접 구현해본 데모입니다.
 
-## Getting Started
+대규모 데이터에서 발생하는 UI 렌더링 문제를 체감하고 가상 리스트의 내부 동작을 직접 구현하며 이해하고자 만들어보았습니다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🖥️ 기술 스택
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* Next.js 16
+* TypeScript
+* React Virtual
+* Recharts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 주요 기능
 
-## Learn More
+### 🔹 데이터 시각화 (홈 페이지 `/`)
 
-To learn more about Next.js, take a look at the following resources:
+* 월별 매출/수익 (Bar + Line Chart)
+* 국가 기준 Top 10 매출 (Bar Chart)
+* 상품군 비중 분석 (Pie Chart)
+* 핵심 분석 지표(KPI) 카드
+* 테이블
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🔹 가상 리스트 데모 (/example)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| 경로                                     | 설명                                  |
+| -------------------------------------- | ----------------------------------- |
+| `/example/default`                     | 가상화 없이 모든 행을 렌더링 (비교용)              |
+| `/example/library`                     | React Virtual 라이브러리 기반 가상리스트        |
+| `/example/my-virtual-same-height`      | 직접 구현 — 고정 높이 행                     |
+| `/example/my-virtual-different-height` | 직접 구현 — 가변 높이 행                     |
+| `/example/my-virtual-dynamic-height`   | 직접 구현 — 동적 높이 행 (ResizeObserver 활용) |
